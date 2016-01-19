@@ -276,9 +276,9 @@ read_mavlink_messages(mavlink_message_t &message)
     //int result = _read_port(cp);
     try {
      result = udp_socket->recv(inBuff, inBuffLen);// is it '->' or just '.'
-    }catch(...)
+    }catch(int e)
     {
-        cerr << "udp error: "<<result << endl;
+        cout << "udp error: "<<e << endl;
     }
     
     // --------------------------------------------------------------------------
