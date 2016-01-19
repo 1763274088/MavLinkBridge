@@ -286,7 +286,7 @@ read_mavlink_messages(mavlink_message_t &message)
     // --------------------------------------------------------------------------
     if (result > 0)
     {
-        cout << "read udp buffer length....." << endl;
+        cout << "read udp buffer length....." <<result<< endl;
         for (int i=0; i<result; i++){
             // the parsing
             msgReceived = mavlink_parse_char(MAVLINK_COMM_1, inBuff[i], &message, &status);
@@ -494,6 +494,7 @@ read_messages()
                     mavlink_msg_set_position_target_local_ned_decode(&message, &(current_messages_to_read.setpoint));
                     current_messages_to_read.time_stamps.setpoint = get_time_usec();
                     this_timestamps.setpoint = current_messages_to_read.time_stamps.setpoint;
+                    break;
                 }
                 case MAVLINK_MSG_ID_COMMAND_LONG:
                 {
@@ -521,6 +522,7 @@ read_messages()
                     {
                         arm_flag=0;
                     }
+                    break;
                 }
                 case MAVLINK_MSG_ID_ATT_POS_MOCAP:
                 {
@@ -528,6 +530,7 @@ read_messages()
                     mavlink_msg_att_pos_mocap_decode(&message, &(current_messages_to_read.mocap));
                     current_messages_to_read.time_stamps.mocap = get_time_usec();
                     this_timestamps.mocap = current_messages_to_read.time_stamps.mocap;
+                    break;
                 }
                     
                 default:
