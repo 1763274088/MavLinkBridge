@@ -254,7 +254,7 @@ read_messages()
 	bool success;               // receive success flag
 	bool received_all = false;  // receive only one message
 	Time_Stamps this_timestamps;
-
+    current_messages_to_read.reset_timestamps();
 	// Blocking wait for new data
 	while ( not received_all and not time_to_exit )
 	{

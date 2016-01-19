@@ -372,6 +372,7 @@ read_messages()
     //while ( not received_all and not time_to_exit )
     unsigned int counter=0;
     
+    current_messages_to_read.reset_timestamps();
     //loop 5 times?
     while (not time_to_exit && counter < 5)
     {
@@ -587,7 +588,7 @@ Autopilot_UDP_Interface::
 write_message(mavlink_message_t message)
 {
     // do the write
-    int len = this->write_mavlink_message(message);
+    int len = write_mavlink_message(message);
     
     // book keep
     write_count++;
