@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     
     for (;;)// run forever
     {
-        cout << "i am here.." << endl;
+        //cout << "i am here.." << endl;
         autopilot_udp_interface.current_messages_to_write=autopilot_serial_interface.current_messages_to_read;
         autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
         usleep(0.02*1000000); // 50Hz

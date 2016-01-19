@@ -650,7 +650,7 @@ write_to_GC()
 {
     // TODO: prepare current_messages_to_write
     mavlink_message_t message;
-    cout << "I am trying to write to GC..........." << endl;
+    //cout << "I am trying to write to GC..........." << endl;
     // alwyas check if the meassages are valid before writing...
     //----write heartbeat
     if (current_messages_to_write.time_stamps.heartbeat)
@@ -668,6 +668,7 @@ write_to_GC()
     //----write attitude
     if(current_messages_to_write.time_stamps.attitude)
     {
+        cout << "writing attitude to GC....."<<endl;
         current_messages_to_write.time_stamps.attitude=0;//reset timestamp untile we get a new one
         mavlink_msg_attitude_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.attitude) );
         // do the write
