@@ -509,6 +509,7 @@ read_messages()
                     }
                     // arm/disarm?
                     if (current_messages_to_read.com.command == MAV_CMD_COMPONENT_ARM_DISARM && current_messages_to_read.com.param1>0.5)
+                        cout << "got arm/disarm command from GC..."<<endl;
                     {
                         
                         arm_flag=1;
