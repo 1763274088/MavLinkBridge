@@ -381,7 +381,7 @@ read_messages()
         //   READ MESSAGE
         // ----------------------------------------------------------------------
         mavlink_message_t message;
-        success = this->read_mavlink_messages(message); // 'this' means the current class object
+        success = read_mavlink_messages(message); // 'this' means the current class object
         
         // ----------------------------------------------------------------------
         //   HANDLE MESSAGE
@@ -523,6 +523,7 @@ read_messages()
                 }
                 case MAVLINK_MSG_ID_ATT_POS_MOCAP:
                 {
+                    cout << "Got Mocap message from GC" << endl;
                     mavlink_msg_att_pos_mocap_decode(&message, &(current_messages_to_read.mocap));
                     current_messages_to_read.time_stamps.mocap = get_time_usec();
                     this_timestamps.mocap = current_messages_to_read.time_stamps.mocap;
