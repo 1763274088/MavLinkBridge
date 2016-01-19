@@ -373,7 +373,7 @@ read_messages()
     unsigned int counter=0;
     
     current_messages_to_read.reset_timestamps();
-    cout << "time stamp... "<<current_messages_to_read.time_stamps.heartbeat << endl
+    cout << "time stamp... "<<current_messages_to_read.time_stamps.heartbeat << endl;
     //loop 5 times?
     while (not time_to_exit && counter < 5)
     {
