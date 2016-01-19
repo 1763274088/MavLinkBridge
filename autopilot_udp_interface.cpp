@@ -521,6 +521,12 @@ read_messages()
                         arm_flag=0;
                     }
                 }
+                case MAVLINK_MSG_ID_ATT_POS_MOCAP:
+                {
+                    mavlink_msg_att_pos_mocap_decode(&message, &(current_messages_to_read.mocap));
+                    current_messages_to_read.time_stamps.mocap = get_time_usec();
+                    this_timestamps.mocap = current_messages_to_read.time_stamps.mocap;
+                }
                     
                 default:
                 {

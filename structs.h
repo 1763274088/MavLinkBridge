@@ -147,6 +147,7 @@ struct Time_Stamps
     uint64_t attitude;
     uint64_t setpoint;
     uint64_t com;
+    uint64_t mocap;
     
     void
     reset_timestamps()
@@ -163,6 +164,7 @@ struct Time_Stamps
         attitude = 0;
         setpoint=0;
         com=0;
+        mocap=0;
     }
     
 };
@@ -210,6 +212,9 @@ struct Mavlink_Messages {
     
     // setpoints
     mavlink_set_position_target_local_ned_t setpoint;
+    
+    // mocap
+    mavlink_att_pos_mocap_t mocap;
     
     // System Parameters?
     

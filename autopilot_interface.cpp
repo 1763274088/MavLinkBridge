@@ -492,6 +492,20 @@ write_commands()
             fprintf(stderr,"WARNING: could not send POSITION_TARGET_LOCAL_NED \n");
     }
     
+    
+    //----write MoCap message
+    if (current_messages_to_write.time_stamps.mocap)
+    {
+        cout << "writing MoCap message to autopilot"<<endl<<endl;
+        current_messages_to_write.time_stamps.mocap=0;//reset timestamp, until we get new one
+        mavlink_msg_att_pos_mocap_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.mocap));
+        int len = write_message(message);
+        
+        // check the write
+        if ( not len > 0 )
+            fprintf(stderr,"WARNING: could not send POSITION_TARGET_LOCAL_NED \n");
+    }
+    
     return;
 }
 
