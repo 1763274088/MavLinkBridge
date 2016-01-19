@@ -567,14 +567,14 @@ int
 Autopilot_UDP_Interface::
 write_mavlink_message(mavlink_message_t &message)
 {
-    char buf[300];
+    uint8_t buf[300];
     
     // Translate message to buffer
-    unsigned len = mavlink_msg_to_send_buffer((uint8_t*)buf, &message);
+    unsigned len = mavlink_msg_to_send_buffer(buf, &message);
     
     // Write buffer to UDP socket
     //_write_port(buf,len);
-    cout << "dest port: " <<destPort<<endl;
+    //cout << "dest port: " <<destPort<<endl;
     udp_socket->sendTo(buf, len, destAddr, destPort);
     
     return len;
