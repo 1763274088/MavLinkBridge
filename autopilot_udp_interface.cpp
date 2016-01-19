@@ -571,6 +571,7 @@ write_mavlink_message(mavlink_message_t &message)
     
     // Write buffer to UDP socket
     //_write_port(buf,len);
+    cout << "dest Address: " <<destAddr<<endl;
     udp_socket->sendTo(buf, (int)len, destAddr, destPort);
     
     return len;
