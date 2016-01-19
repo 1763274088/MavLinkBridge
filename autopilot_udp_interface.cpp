@@ -375,7 +375,7 @@ read_messages()
     current_messages_to_read.reset_timestamps();
     cout << "time stamp... "<<current_messages_to_read.time_stamps.heartbeat << endl;
     //loop 5 times?
-    while (not time_to_exit && counter < 5)
+    while (not time_to_exit && counter < 10)
     {
         // ----------------------------------------------------------------------
         //   READ MESSAGE
@@ -678,8 +678,8 @@ write_to_GC()
     //----write attitude
     if(current_messages_to_write.time_stamps.attitude)
     {
-        cout << "roll angle....."<<current_messages_to_write.attitude.roll<<endl;
-        cout << "writing attitude to GC....."<<endl;
+        //cout << "roll angle....."<<current_messages_to_write.attitude.roll<<endl;
+        //cout << "writing attitude to GC....."<<endl;
         current_messages_to_write.time_stamps.attitude=0;//reset timestamp untile we get a new one
         mavlink_msg_attitude_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.attitude) );
         // do the write
