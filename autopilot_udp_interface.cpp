@@ -286,7 +286,7 @@ read_mavlink_messages(mavlink_message_t &message)
     // --------------------------------------------------------------------------
     if (result > 0)
     {
-        cout << "read udp buffer length....." <<result<< endl;
+        //cout << "read udp buffer length....." <<result<< endl;
         for (int i=0; i<result; i++){
             // the parsing
             msgReceived = mavlink_parse_char(MAVLINK_COMM_1, inBuff[i], &message, &status);

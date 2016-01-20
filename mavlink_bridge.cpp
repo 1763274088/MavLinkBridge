@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
         //usleep(1000); //give it some time to sink
         autopilot_serial_interface.current_messages_to_read.reset_timestamps();
         //autopilot_udp_interface.current_messages_to_write.reset_timestamps();
-        autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
+        //autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
         //usleep(1000); // to sink
         autopilot_udp_interface.current_messages_to_read.reset_timestamps();
         //autopilot_serial_interface.current_messages_to_write.reset_timestamps();
