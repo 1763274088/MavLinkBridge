@@ -384,6 +384,7 @@ read_messages()
         //   READ MESSAGE
         // ----------------------------------------------------------------------
         mavlink_message_t message;
+        memset(&message, 0, sizeof(message));
         success = read_mavlink_messages(message); // 'this' means the current class object
         cout << "printing the sccess variable...."<< success << endl;
         cout << "printing mavlink msgid....." << message.msgid << endl;
