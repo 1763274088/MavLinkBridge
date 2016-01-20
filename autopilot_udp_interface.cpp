@@ -274,6 +274,7 @@ read_mavlink_messages(mavlink_message_t &message)
     
     // this function locks the port during read
     //int result = _read_port(cp);
+    
     try {
      result = udp_socket->recv(inBuff, inBuffLen);// is it '->' or just '.'
         cout << " result of UDP recv function...." << result << endl;
@@ -384,7 +385,8 @@ read_messages()
         // ----------------------------------------------------------------------
         mavlink_message_t message;
         success = read_mavlink_messages(message); // 'this' means the current class object
-        
+        cout << "printing the sccess variable...."<< sccess << endl;
+        cout << "printing mavlink msgid....." << message.msgid << endl;
         // ----------------------------------------------------------------------
         //   HANDLE MESSAGE
         // ----------------------------------------------------------------------
