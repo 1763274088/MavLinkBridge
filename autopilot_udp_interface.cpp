@@ -387,13 +387,11 @@ read_messages()
         mavlink_message_t message;
         memset(&message, 0, sizeof(message));
         success = read_mavlink_messages(message); // 'this' means the current class object
-        cout << "printing the sccess variable...."<< success << endl;
-        cout << "printing mavlink msgid....." << message.msgid << endl;
         // ----------------------------------------------------------------------
         //   HANDLE MESSAGE
         // ----------------------------------------------------------------------
         if( success )
-        {            
+        {
             // Store message sysid and compid.
             // Note this doesn't handle multiple message sources.
             current_messages_to_read.sysid  = message.sysid;
