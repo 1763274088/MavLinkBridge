@@ -102,7 +102,11 @@ int main(int argc, char *argv[])
     {
         //cout << "i am here.." << endl;
         autopilot_udp_interface.current_messages_to_write=autopilot_serial_interface.current_messages_to_read;
+        usleep(1000); //give it some time to sink
+        autopilot_udp_interface.current_messages_to_write.reset_timestamps();
         autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
+        usleep(1000); // to sink
+        autopilot_serial_interface.current_messages_to_write.reset_timestamps();
         usleep(0.02*1000000); // 50Hz
     }
     
