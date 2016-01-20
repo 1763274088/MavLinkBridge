@@ -281,6 +281,7 @@ read_mavlink_messages(mavlink_message_t &message)
     }catch(exception& e)
     {
         cout << "udp error: "<<e.what() << endl;
+        return 0; // return not successful
     }
     
     // --------------------------------------------------------------------------
