@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
         autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
         usleep(1000); // to sink
         autopilot_serial_interface.current_messages_to_write.reset_timestamps();
+        cout << "moc time........." <<autopilot_serial_interface.current_messages_to_write.time_stamps.moc<<endl;
         usleep(0.02*1000000); // 50Hz
     }
     
