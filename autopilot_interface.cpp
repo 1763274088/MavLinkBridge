@@ -496,6 +496,7 @@ write_commands()
     //----write MoCap message
     if (current_messages_to_write.time_stamps.mocap)
     {
+        cout <<"mocap time stamp...."<< current_messages_to_write.time_stamps.mocap;
         cout << "writing MoCap message to autopilot"<<endl<<endl;
         current_messages_to_write.time_stamps.mocap=0;//reset timestamp, until we get new one
         mavlink_msg_att_pos_mocap_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.mocap));
