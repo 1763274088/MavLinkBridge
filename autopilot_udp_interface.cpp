@@ -389,7 +389,7 @@ read_messages()
         // ----------------------------------------------------------------------
         if( success )
         {
-            cout << "success. got mavlink message from GC..."<<endl;
+            cout << "success. got mavlink message from GC..."<< success<<endl;
             
             // Store message sysid and compid.
             // Note this doesn't handle multiple message sources.
