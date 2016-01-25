@@ -508,10 +508,12 @@ read_messages()
                     {
                         cout << "Got offboard command" <<endl;
                         offb_flag=1;
+                        break;
                     }
                     if (current_messages_to_read.com.command == MAV_CMD_NAV_GUIDED_ENABLE && current_messages_to_read.com.param1<0.5)
                     {
                         offb_flag=0;
+                        break;
                     }
                     // arm/disarm?
                     if (current_messages_to_read.com.command == MAV_CMD_COMPONENT_ARM_DISARM && current_messages_to_read.com.param1>0.5)
@@ -519,10 +521,12 @@ read_messages()
                     {
                         
                         arm_flag=1;
+                        break;
                     }
                     if (current_messages_to_read.com.command == MAV_CMD_COMPONENT_ARM_DISARM && current_messages_to_read.com.param1<0.5)
                     {
                         arm_flag=0;
+                        break;
                     }
                     break;
                 }
