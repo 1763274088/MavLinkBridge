@@ -148,6 +148,7 @@ struct Time_Stamps
     uint64_t setpoint;
     uint64_t com;
     uint64_t mocap;
+    uint64_t req_stream;
     
     void
     reset_timestamps()
@@ -165,6 +166,7 @@ struct Time_Stamps
         setpoint=0;
         com=0;
         mocap=0;
+        req_stream=0;
     }
     
 };
@@ -215,6 +217,9 @@ struct Mavlink_Messages {
     
     // mocap
     mavlink_att_pos_mocap_t mocap;
+    
+    // request data stream
+    mavlink_request_data_stream_t req_stream;
     
     // System Parameters?
     

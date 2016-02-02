@@ -538,6 +538,13 @@ read_messages()
                     this_timestamps.mocap = current_messages_to_read.time_stamps.mocap;
                     break;
                 }
+                case MAVLINK_MSG_ID_REQUEST_DATA_STREAM:
+                {
+                    mavlink_msg_request_data_stream_decode(&message, &(current_messages_to_read.req_stream));
+                    current_messages_to_read.time_stamps.req_stream = get_time_usec();
+                    this_timestamps.req_stream = current_messages_to_read.time_stamps.req_stream;
+                    break;
+                }
                     
                 default:
                 {
