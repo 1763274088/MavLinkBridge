@@ -985,7 +985,7 @@ start_autopilot_interface_write_thread(void *args)
 	// takes an autopilot object argument
 	Autopilot_Interface *autopilot_interface = (Autopilot_Interface *)args;
 
-	// run the object's read thread
+	// run the object's write thread
 	autopilot_interface->start_write_thread();
 
 	// done!

@@ -890,7 +890,7 @@ start()
     
     cout << "Found GCS with ID: " << current_messages_to_read.sysid << endl;
     
-    // now we know autopilot is sending messages
+    // now we know GCS is sending messages
     printf("\n");
     
     
@@ -954,7 +954,7 @@ start()
     */
     // we need this before starting the write thread
     
-    cout << "Received initial position and attitude messages. I will start writing to the GCS"<< endl;
+    //cout << "Received initial position and attitude messages. I will start writing to the GCS"<< endl;
     
     // --------------------------------------------------------------------------
     //   WRITE THREAD

@@ -47,14 +47,7 @@ int main(int argc, char *argv[])
      *
      * This starts two threads for read and write over MAVlink. The read thread
      * listens for any MAVlink message and pushes it to the current_messages
-     * attribute.  The write thread at the moment only streams a position target
-     * in the local NED frame (mavlink_set_position_target_local_ned_t), which
-     * is changed by using the method update_setpoint().  Sending these messages
-     * are only half the requirement to get response from the autopilot, a signal
-     * to enter "offboard_control" mode is sent by using the enable_offboard_control()
-     * method.  Signal the exit of this mode with disable_offboard_control().  It's
-     * important that one way or another this program signals offboard mode exit,
-     * otherwise the vehicle will go into failsafe.
+     * attribute.
      *
      */
     Autopilot_Interface autopilot_serial_interface(&serial_port);
