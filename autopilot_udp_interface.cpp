@@ -8,7 +8,7 @@
 
 /****************************************************************************
  *
- *   Copyright (c) 2014 Mohamed Abdlekader. All rights reserved.
+ *   Copyright (c) 2016 Mohamed Abdlekader. All rights reserved.
  *   Author: Mohamed Abdelkader <mohamedashraf123@gmail.com>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -543,6 +543,13 @@ read_messages()
                     mavlink_msg_request_data_stream_decode(&message, &(current_messages_to_read.req_stream));
                     current_messages_to_read.time_stamps.req_stream = get_time_usec();
                     this_timestamps.req_stream = current_messages_to_read.time_stamps.req_stream;
+                    break;
+                }
+                case MAVLINK_MSG_ID_PARAM_SET:
+                {
+                    mavlink_msg_param_set_decode(&message, &(current_messages_to_read.setparam));
+                    current_messages_to_read.time_stamps.setparam = get_time_usec();
+                    this_timestamps.setparam = current_messages_to_read.time_stamps.setparam;
                     break;
                 }
                     

@@ -445,7 +445,7 @@ write_commands()
             // check the write
             if ( not len > 0 )
             {
-                fprintf(stderr,"WARNING: could not send POSITION_TARGET_LOCAL_NED \n");
+                fprintf(stderr,"WARNING: could not send message \n");
             }else{
                 offb_flag=1;
             }
@@ -460,7 +460,7 @@ write_commands()
             // check the write
             if ( not len > 0 )
             {
-                fprintf(stderr,"WARNING: could not send POSITION_TARGET_LOCAL_NED \n");
+                fprintf(stderr,"WARNING: could not send offboard message \n");
             }else{
                 offb_flag=0;
             }
@@ -474,7 +474,7 @@ write_commands()
             
             // check the write
             if ( not len > 0 )
-                fprintf(stderr,"WARNING: could not send POSITION_TARGET_LOCAL_NED \n");
+                fprintf(stderr,"WARNING: could not send ARM/DISARM message \n");
 
         }
     }
@@ -504,7 +504,7 @@ write_commands()
         
         // check the write
         if ( not len > 0 )
-            fprintf(stderr,"WARNING: could not send POSITION_TARGET_LOCAL_NED \n");
+            fprintf(stderr,"WARNING: could not send MoCap message \n");
     }
     
     //----write request_stream message
@@ -517,7 +517,20 @@ write_commands()
         
         // check the write
         if ( not len > 0 )
-            fprintf(stderr,"WARNING: could not send POSITION_TARGET_LOCAL_NED \n");
+            fprintf(stderr,"WARNING: could not send request_stream message \n");
+    }
+    
+    //----write parameter set message
+    if (current_messages_to_write.time_stamps.setparam)
+    {
+        
+        current_messages_to_write.time_stamps.setparam=0;//reset timestamp, until we get new one
+        mavlink_msg_param_set_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.setparam));
+        int len = write_message(message);
+        
+        // check the write
+        if ( not len > 0 )
+            fprintf(stderr,"WARNING: could not send paramter set message \n");
     }
     
     return;
@@ -946,7 +959,7 @@ write_thread(void)
 	// otherwise it will go into fail safe
 	while ( not time_to_exit )
 	{
-		usleep(0.02*1000000);   // Stream at 50Hz?
+		usleep(0.02*1000000);   // write at 50Hz?
 		//write_setpoint();
         
         write_commands();
