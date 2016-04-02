@@ -303,7 +303,8 @@ public:
     mavlink_set_position_target_local_ned_t initial_position;
     
     void update_setpoint(mavlink_set_position_target_local_ned_t setpoint);
-    void read_messages();
+    void read_messages(void);
+    void read_messages_raw(void);
     int  write_message(mavlink_message_t message);
     
     //void enable_offboard_control();
@@ -347,6 +348,7 @@ private:
     int toggle_offboard_control( bool flag );
     void write_setpoint();
     void write_to_GC(void);
+    void write_raw_mavlink(void);
     uint64_t get_time_usec(void);
     
     mavlink_status_t lastStatus;

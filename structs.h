@@ -135,6 +135,7 @@ struct Time_Stamps
         reset_timestamps();
     }
     
+    uint64_t mavlink_packet;
     uint64_t heartbeat;
     uint64_t sys_status;
     uint64_t battery_status;
@@ -154,6 +155,7 @@ struct Time_Stamps
     void
     reset_timestamps()
     {
+        mavlink_packet=0;
         heartbeat = 0;
         sys_status = 0;
         battery_status = 0;
@@ -180,6 +182,9 @@ struct Mavlink_Messages {
     
     int sysid;
     int compid;
+    
+    // Mavlink general message
+    mavlink_message_t mavlink_packet;
     
     // Heartbeat
     mavlink_heartbeat_t heartbeat;

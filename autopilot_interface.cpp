@@ -242,6 +242,42 @@ update_setpoint(mavlink_set_position_target_local_ned_t setpoint)
 }
 
 
+/* Read raw mavlink packet without further decoding
+ */
+void
+Autopilot_Interface::
+read_messages_raw()
+{
+    bool success;               // receive success flag
+    Time_Stamps this_timestamps;
+    current_messages_to_read.reset_timestamps();
+    
+    mavlink_message_t message;
+    memset(&message, 0, sizeof(message));
+    // read serial port
+    success = serial_port->read_message(message);
+    
+    if( success )
+    {
+        
+        // Store message sysid and compid.
+        // Note this doesn't handle multiple message sources.
+        current_messages_to_read.sysid  = message.sysid;
+        current_messages_to_read.compid = message.compid;
+        
+        current_messages_to_read.mavlink_packet=message;
+        current_messages_to_read.time_stamps.mavlink_packet = get_time_usec();
+        this_timestamps.mavlink_packet = current_messages_to_read.time_stamps.mavlink_packet;
+    }
+    
+    // give the write thread time to use the port
+    if ( writing_status > false )
+        usleep(100); // look for components of batches at 10kHz
+    
+    return;
+}
+
+
 /*
 // ------------------------------------------------------------------------------
 //   Read Messages
@@ -418,6 +454,27 @@ write_message(mavlink_message_t message)
 	// Done!
 	return len;
 }
+
+/*
+ * Write raw mavlink packet without further encoding
+ */
+void
+Autopilot_Interface::
+write_raw_mavlink()
+{
+    if (current_messages_to_write.time_stamps.mavlink_packet)
+    {
+        cout << "writing raw mavlink packet to autopilot via serial port"<<endl<<endl;
+        current_messages_to_write.time_stamps.mavlink_packet=0;//reset timestamp, until we get new one
+        int len = write_message(current_messages_to_write.mavlink_packet);
+        
+        // check the write
+        if ( not len > 0 )
+            fprintf(stderr,"WARNING: could not write raw mavlink message via serial port \n");
+    }
+    return;
+}
+
 
 // ------------------------------------------------------------------------------
 //   Write commands Messages
@@ -917,7 +974,8 @@ read_thread()
 
 	while ( not time_to_exit )
 	{
-		read_messages();
+		//read_messages();
+        read_messages_raw();
 		usleep(0.02*1000000); // Read batches at 50Hz?
 	}
 
@@ -962,7 +1020,11 @@ write_thread(void)
 		usleep(0.02*1000000);   // write at 50Hz?
 		//write_setpoint();
         
-        write_commands();
+        //write specific commands
+        //write_commands();
+        
+        // write the raw mavlink packet
+        write_raw_mavlink();
 	}
 
 	// signal end

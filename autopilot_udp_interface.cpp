@@ -352,6 +352,42 @@ read_mavlink_messages(mavlink_message_t &message)
 }
 
 /*
+ * Read general mavlink message wihout further decoding
+ */
+void
+Autopilot_UDP_Interface::
+read_messages_raw()
+{
+    bool success;               // receive success flag
+    Time_Stamps this_timestamps;
+    
+    current_messages_to_read.reset_timestamps();
+    // temporary message
+    mavlink_message_t message;
+    memset(&message, 0, sizeof(message));
+    
+    // read mavlink packet
+    success = read_mavlink_messages(message);
+    
+    if (success) {
+        // Store message sysid and compid.
+        // Note this doesn't handle multiple message sources.
+        current_messages_to_read.sysid  = message.sysid;
+        current_messages_to_read.compid = message.compid;
+        
+        current_messages_to_read.mavlink_packet=message;
+        current_messages_to_read.time_stamps.mavlink_packet = get_time_usec();
+        this_timestamps.mavlink_packet = current_messages_to_read.time_stamps.mavlink_packet;
+    }
+    // give the write thread time to use the port
+    if ( writing_status > false )
+        usleep(100); // look for components of batches at 10kHz
+    
+    return;
+}
+
+
+/*
 * ------------------------------------------------------------------------------
 *   Read Messages
 * this expected to read from Ground Station
@@ -386,7 +422,7 @@ read_messages()
         // ----------------------------------------------------------------------
         mavlink_message_t message;
         memset(&message, 0, sizeof(message));
-        success = read_mavlink_messages(message); // 'this' means the current class object
+        success = read_mavlink_messages(message);
         // ----------------------------------------------------------------------
         //   HANDLE MESSAGE
         // ----------------------------------------------------------------------
@@ -592,6 +628,7 @@ read_messages()
 
 // ------------------------------------------------------------------------------
 //   Write  Mavlink Message via UDP
+//      possibly to GCS
 // ------------------------------------------------------------------------------
 
 int
@@ -674,6 +711,30 @@ write_setpoint()
     return;
 }
 */
+
+
+/*
+ * write raw mavlink packet without further encoding
+ */
+void
+Autopilot_UDP_Interface::
+write_raw_mavlink()
+{
+    if (current_messages_to_write.time_stamps.mavlink_packet)
+    {
+        current_messages_to_write.time_stamps.mavlink_packet=0;//reset timestamp untile we get a new one
+        // do the write
+        cout<< "writing raw mavlink packet via UDP..."<<endl;
+        int len = write_message(current_messages_to_write.mavlink_packet);
+        
+        // check the write
+        if ( not len > 0 )
+            fprintf(stderr,"WARNING: could not write raw mavlink message via UDP \n");
+    }
+    return;
+}
+
+
 /*
 // ------------------------------------------------------------------------------
 //   Write Messages to ground control station
@@ -686,7 +747,7 @@ write_to_GC()
     // TODO: prepare current_messages_to_write
     mavlink_message_t message;
     //cout << "I am trying to write to GC..........." << endl;
-    // alwyas check if the meassages are valid before writing...
+    // alwyas check if the meassages are valid before writing.
     //----write heartbeat
     if (current_messages_to_write.time_stamps.heartbeat)
     {
@@ -1087,7 +1148,8 @@ read_thread()
     
     while ( not time_to_exit )
     {
-        read_messages();
+        //read_messages();
+        read_messages_raw();
         usleep(0.02*1000000); // Read batches at 50Hz
     }
     
@@ -1135,7 +1197,9 @@ write_thread(void)
     {
         usleep(0.02*1000000);   // Stream at 50Hz
         //write_setpoint();
-        write_to_GC();
+        //write_to_GC();
+        
+        write_raw_mavlink();
     }
     
     // signal end
