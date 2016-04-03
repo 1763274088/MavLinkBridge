@@ -250,7 +250,7 @@ read_messages_raw()
 {
     bool success;               // receive success flag
     Time_Stamps this_timestamps;
-    //current_messages_to_read.reset_timestamps();
+    current_messages_to_read.reset_timestamps();
     
     mavlink_message_t message;
     memset(&message, 0, sizeof(message));
@@ -987,7 +987,7 @@ read_thread()
 	{
 		//read_messages();
         read_messages_raw();
-		usleep(0.01*1000000); // Read batches at 100Hz?
+		usleep(0.02*1000000); // Read batches at 50Hz?
 	}
 
 	reading_status = false;
@@ -1028,7 +1028,7 @@ write_thread(void)
 	// otherwise it will go into fail safe
 	while ( not time_to_exit )
 	{
-		usleep(0.01*1000000);   // write at 100Hz?
+		usleep(0.02*1000000);   // write at 50Hz?
 		//write_setpoint();
         
         //write specific commands
