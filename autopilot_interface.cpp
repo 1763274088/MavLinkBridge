@@ -250,7 +250,7 @@ read_messages_raw()
 {
     bool success;               // receive success flag
     Time_Stamps this_timestamps;
-    current_messages_to_read.reset_timestamps();
+    //current_messages_to_read.reset_timestamps();
     
     mavlink_message_t message;
     memset(&message, 0, sizeof(message));
