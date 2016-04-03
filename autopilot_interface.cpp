@@ -824,7 +824,7 @@ start()
 
     // i think the following loop is not neccessary !!
 	// Wait for initial position ned
-    /*
+    
 	while ( not ( current_messages_to_read.time_stamps.local_position_ned &&
 				  current_messages_to_read.time_stamps.attitude            )  )
 	{
@@ -832,8 +832,9 @@ start()
 			return;
 		usleep(500000); // 2Hz
 	}
-    */
     
+    
+    /*
     while ( not ( current_messages_to_read.time_stamps.mavlink_packet )  )
     {
         if ( time_to_exit )
@@ -841,7 +842,7 @@ start()
         usleep(500000); // 2Hz
     }
     cout << "Got first mavlink packet...."<<endl;
-
+     */
     /*
 	// copy initial position ned
 	Mavlink_Messages local_data = current_messages;
@@ -985,8 +986,8 @@ read_thread()
 
 	while ( not time_to_exit )
 	{
-		//read_messages();
-        read_messages_raw();
+		read_messages();
+        //read_messages_raw();
 		usleep(0.02*1000000); // Read batches at 50Hz?
 	}
 
@@ -1032,10 +1033,10 @@ write_thread(void)
 		//write_setpoint();
         
         //write specific commands
-        //write_commands();
+        write_commands();
         
         // write the raw mavlink packet
-        write_raw_mavlink();
+        //write_raw_mavlink();
 	}
 
 	// signal end

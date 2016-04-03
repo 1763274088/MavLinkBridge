@@ -1148,8 +1148,8 @@ read_thread()
     
     while ( not time_to_exit )
     {
-        //read_messages();
-        read_messages_raw();
+        read_messages();
+        //read_messages_raw();
         usleep(0.02*1000000); // Read batches at 50Hz
     }
     
@@ -1197,9 +1197,9 @@ write_thread(void)
     {
         usleep(0.02*1000000);   // Stream at 50Hz
         //write_setpoint();
-        //write_to_GC();
+        write_to_GC();
         
-        write_raw_mavlink();
+        //write_raw_mavlink();
     }
     
     // signal end
