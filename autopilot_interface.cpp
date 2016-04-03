@@ -872,7 +872,7 @@ start()
 		usleep(100000); // 10Hz
 
 	// now we're streaming setpoint commands
-	printf("\n");
+	printf("Streaming mavlink to Autopilot, via serial\n");
 
 
 	// Done!
