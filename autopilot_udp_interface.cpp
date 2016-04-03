@@ -1150,7 +1150,7 @@ read_thread()
     {
         //read_messages();
         read_messages_raw();
-        usleep(0.02*1000000); // Read batches at 50Hz
+        usleep(0.01*1000000); // Read batches at 100Hz
     }
     
     reading_status = false;
@@ -1195,7 +1195,7 @@ write_thread(void)
     // otherwise it will go into fail safe
     while ( not time_to_exit )
     {
-        usleep(0.02*1000000);   // Stream at 50Hz
+        usleep(0.01*1000000);   // Stream at 100Hz
         //write_setpoint();
         //write_to_GC();
         
