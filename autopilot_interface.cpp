@@ -822,6 +822,7 @@ start()
 
     // i think the following loop is not neccessary !!
 	// Wait for initial position ned
+    /*
 	while ( not ( current_messages_to_read.time_stamps.local_position_ned &&
 				  current_messages_to_read.time_stamps.attitude            )  )
 	{
@@ -829,6 +830,14 @@ start()
 			return;
 		usleep(500000); // 2Hz
 	}
+    */
+    
+    while ( not ( current_messages_to_read.time_stamps.mavlink_packet )  )
+    {
+        if ( time_to_exit )
+            return;
+        usleep(500000); // 2Hz
+    }
     
 
     /*
@@ -869,7 +878,7 @@ start()
 	// Done!
 	return;
 
-}
+}//end: startup
 
 
 // ------------------------------------------------------------------------------
