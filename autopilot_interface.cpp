@@ -838,7 +838,7 @@ start()
             return;
         usleep(500000); // 2Hz
     }
-    
+    cout << "Got first mavlink packet...."<<endl;
 
     /*
 	// copy initial position ned
