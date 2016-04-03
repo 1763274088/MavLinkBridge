@@ -259,6 +259,8 @@ read_messages_raw()
     
     if( success )
     {
+        // for debug
+        cout << "Got mavlink packet from autopilot..."<<endl<<endl;
         
         // Store message sysid and compid.
         // Note this doesn't handle multiple message sources.
@@ -456,7 +458,7 @@ write_message(mavlink_message_t message)
 }
 
 /*
- * Write raw mavlink packet without further encoding
+ * Write raw mavlink packet without further encoding, via serial
  */
 void
 Autopilot_Interface::
