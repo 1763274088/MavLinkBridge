@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
         //autopilot_udp_interface.current_messages_to_read.reset_timestamps();
         //autopilot_serial_interface.current_messages_to_write.reset_timestamps();
         //cout << "mocap time stamp........." <<autopilot_serial_interface.current_messages_to_write.time_stamps.mocap<<endl;
-        usleep(0.01*1000000); // 100Hz
+        usleep(0.02*1000000); // 50Hz
     }
     
     
