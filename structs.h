@@ -151,6 +151,7 @@ struct Time_Stamps
     uint64_t mocap;
     uint64_t req_stream;
     uint64_t setparam;
+    uint64_t set_actuators;
     
     void
     reset_timestamps()
@@ -171,6 +172,7 @@ struct Time_Stamps
         mocap=0;
         req_stream=0;
         setparam=0;
+        set_actuators=0;
     }
     
 };
@@ -232,6 +234,9 @@ struct Mavlink_Messages {
     
     // set parameters
     mavlink_param_set_t setparam;
+    
+    // set actautors
+    mavlink_set_actuator_control_target_t set_actuators;
     
     
     // Time Stamps

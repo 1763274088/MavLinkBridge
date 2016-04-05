@@ -592,6 +592,19 @@ write_commands()
             fprintf(stderr,"WARNING: could not send paramter set message \n");
     }
     
+    //----write set actuators message
+    if (current_messages_to_write.time_stamps.set_actuators)
+    {
+        
+        current_messages_to_write.time_stamps.set_actuators=0;//reset timestamp, until we get new one
+        mavlink_msg_set_actuator_control_target_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.set_actuators));
+        int len = write_message(message);
+        
+        // check the write
+        if ( not len > 0 )
+            fprintf(stderr,"WARNING: could not send SET ACTUATORS message \n");
+    }
+    
     return;
 }
 
