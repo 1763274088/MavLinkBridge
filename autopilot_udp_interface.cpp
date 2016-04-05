@@ -592,7 +592,7 @@ read_messages()
                 
                 case MAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET:
                 {
-                    mavlink_msg_param_set_decode(&message, &(current_messages_to_read.set_actuators));
+                    mavlink_msg_set_actuator_control_target_decode(&message, &(current_messages_to_read.set_actuators));
                     current_messages_to_read.time_stamps.set_actuators = get_time_usec();
                     this_timestamps.set_actuators = current_messages_to_read.time_stamps.set_actuators;
                     break;
