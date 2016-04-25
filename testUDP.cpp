@@ -72,6 +72,8 @@ int main(int argc, char *argv[])
         //cout << "i am here.." << endl;
         cout << autopilot_udp_interface.current_messages_to_read.time_stamps.attitude << endl;
         usleep(dt*1000000); // (1/dt) Hz
+        
+        //autopilot_udp_interface.current_messages_to_read.reset_timestamps();
     }
     
     

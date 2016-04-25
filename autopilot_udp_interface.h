@@ -329,8 +329,8 @@ private:
     const int outBuffLen=1024;// maximum output buffer length
     
     // define I/O buffers
-    uint8_t inBuff[1024]; // get from UDP, send to uart
-    uint8_t outBuff[1024]; // get from uart, send to UDP
+    uint8_t inBuff[1024]; //
+    uint8_t outBuff[1024]; // 
     
     bool time_to_exit;
     
@@ -342,6 +342,7 @@ private:
     void read_thread();
     void write_thread(void);
     int read_mavlink_messages(mavlink_message_t &message);
+    void read_mavlink_messages_2(void);
     int write_mavlink_message(mavlink_message_t &message);
 
     
@@ -352,6 +353,7 @@ private:
     uint64_t get_time_usec(void);
     
     mavlink_status_t lastStatus;
+    mavlink_message_t rcv_mavlink_message;
     
 };
 

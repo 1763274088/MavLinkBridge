@@ -304,7 +304,10 @@ read_mavlink_messages(mavlink_message_t &message)
             }
             lastStatus = status;
             if (msgReceived)
+            {
+                // maybe we should assign mavlink messages here
                 break;
+            }
         }
     }
     
@@ -350,6 +353,293 @@ read_mavlink_messages(mavlink_message_t &message)
     
     // Done!
     return msgReceived;
+}
+
+/*
+ * This function loads mavlink messages directly
+ */
+void
+Autopilot_UDP_Interface::
+read_mavlink_messages_2(void)
+{
+    uint8_t          cp;// this is intended for serial port, not UDP
+    mavlink_status_t status;
+    uint8_t          msgReceived = false;
+    int result;
+    
+    
+    // --------------------------------------------------------------------------
+    //   READ FROM PORT
+    // --------------------------------------------------------------------------
+    
+    // this function locks the port during read
+    //int result = _read_port(cp);
+    
+    try {
+        result = udp_socket->recv(inBuff, inBuffLen);// is it '->' or just '.'
+        if (debug)
+            cout << " result of UDP recv function...." << result << endl;
+    }catch(exception& e)
+    {
+        cout << "udp error: "<<e.what() << endl;
+        return; // return not successful
+    }
+    
+    // --------------------------------------------------------------------------
+    //   PARSE MESSAGE
+    // --------------------------------------------------------------------------
+    if (result > 0)
+    {
+        // time stamps should be reset in main after reading
+        //current_messages_to_read.reset_timestamps();
+        Time_Stamps this_timestamps;
+        memset(&rcv_mavlink_message, 0, sizeof(rcv_mavlink_message));
+        
+        //cout << "read udp buffer length....." <<result<< endl;
+        for (int i=0; i<result; i++){
+            // the parsing
+            msgReceived = mavlink_parse_char(MAVLINK_COMM_1, inBuff[i], &rcv_mavlink_message, &status);
+            
+            // check for dropped packets
+            if ( (lastStatus.packet_rx_drop_count != status.packet_rx_drop_count) && debug )
+            {
+                printf("ERROR: DROPPED %d PACKETS\n", status.packet_rx_drop_count);
+                unsigned char v=cp;
+                fprintf(stderr,"%02x ", v);
+            }
+            lastStatus = status;
+            if (msgReceived)
+            {
+                // maybe we should assign mavlink messages here
+                //break;
+                // Store message sysid and compid.
+                // Note this doesn't handle multiple message sources.
+                current_messages_to_read.sysid  = rcv_mavlink_message.sysid;
+                current_messages_to_read.compid = rcv_mavlink_message.compid;
+                
+                // Handle Message ID
+                switch (rcv_mavlink_message.msgid)
+                {
+                        
+                    case MAVLINK_MSG_ID_HEARTBEAT:
+                    {
+                        //printf("MAVLINK_MSG_ID_HEARTBEAT\n");
+                        mavlink_msg_heartbeat_decode(&rcv_mavlink_message, &(current_messages_to_read.heartbeat));
+                        current_messages_to_read.time_stamps.heartbeat = get_time_usec();
+                        this_timestamps.heartbeat = current_messages_to_read.time_stamps.heartbeat;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_SYS_STATUS:
+                    {
+                        //printf("MAVLINK_MSG_ID_SYS_STATUS\n");
+                        mavlink_msg_sys_status_decode(&rcv_mavlink_message, &(current_messages_to_read.sys_status));
+                        current_messages_to_read.time_stamps.sys_status = get_time_usec();
+                        this_timestamps.sys_status = current_messages_to_read.time_stamps.sys_status;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_BATTERY_STATUS:
+                    {
+                        //printf("MAVLINK_MSG_ID_BATTERY_STATUS\n");
+                        mavlink_msg_battery_status_decode(&rcv_mavlink_message, &(current_messages_to_read.battery_status));
+                        current_messages_to_read.time_stamps.battery_status = get_time_usec();
+                        this_timestamps.battery_status = current_messages_to_read.time_stamps.battery_status;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_RADIO_STATUS:
+                    {
+                        //printf("MAVLINK_MSG_ID_RADIO_STATUS\n");
+                        mavlink_msg_radio_status_decode(&rcv_mavlink_message, &(current_messages_to_read.radio_status));
+                        current_messages_to_read.time_stamps.radio_status = get_time_usec();
+                        this_timestamps.radio_status = current_messages_to_read.time_stamps.radio_status;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_LOCAL_POSITION_NED:
+                    {
+                        //printf("MAVLINK_MSG_ID_LOCAL_POSITION_NED\n");
+                        mavlink_msg_local_position_ned_decode(&rcv_mavlink_message, &(current_messages_to_read.local_position_ned));
+                        current_messages_to_read.time_stamps.local_position_ned = get_time_usec();
+                        this_timestamps.local_position_ned = current_messages_to_read.time_stamps.local_position_ned;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_GLOBAL_POSITION_INT:
+                    {
+                        //printf("MAVLINK_MSG_ID_GLOBAL_POSITION_INT\n");
+                        mavlink_msg_global_position_int_decode(&rcv_mavlink_message, &(current_messages.global_position_int));
+                        current_messages_to_read.time_stamps.global_position_int = get_time_usec();
+                        this_timestamps.global_position_int = current_messages_to_read.time_stamps.global_position_int;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED:
+                    {
+                        //printf("MAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED\n");
+                        mavlink_msg_position_target_local_ned_decode(&rcv_mavlink_message, &(current_messages_to_read.position_target_local_ned));
+                        current_messages_to_read.time_stamps.position_target_local_ned = get_time_usec();
+                        this_timestamps.position_target_local_ned = current_messages_to_read.time_stamps.position_target_local_ned;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT:
+                    {
+                        //printf("MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT\n");
+                        mavlink_msg_position_target_global_int_decode(&rcv_mavlink_message, &(current_messages_to_read.position_target_global_int));
+                        current_messages_to_read.time_stamps.position_target_global_int = get_time_usec();
+                        this_timestamps.position_target_global_int = current_messages_to_read.time_stamps.position_target_global_int;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_HIGHRES_IMU:
+                    {
+                        //printf("MAVLINK_MSG_ID_HIGHRES_IMU\n");
+                        mavlink_msg_highres_imu_decode(&rcv_mavlink_message, &(current_messages_to_read.highres_imu));
+                        current_messages_to_read.time_stamps.highres_imu = get_time_usec();
+                        this_timestamps.highres_imu = current_messages_to_read.time_stamps.highres_imu;
+                        break;
+                    }
+                        
+                    case MAVLINK_MSG_ID_ATTITUDE:
+                    {
+                        //printf("MAVLINK_MSG_ID_ATTITUDE\n");
+                        mavlink_msg_attitude_decode(&rcv_mavlink_message, &(current_messages_to_read.attitude));
+                        current_messages_to_read.time_stamps.attitude = get_time_usec();
+                        this_timestamps.attitude = current_messages_to_read.time_stamps.attitude;
+                        break;
+                    }
+                    case MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED:
+                    {
+                        cout << "Got Set position message" <<endl;
+                        mavlink_msg_set_position_target_local_ned_decode(&rcv_mavlink_message, &(current_messages_to_read.setpoint));
+                        current_messages_to_read.time_stamps.setpoint = get_time_usec();
+                        this_timestamps.setpoint = current_messages_to_read.time_stamps.setpoint;
+                        break;
+                    }
+                    case MAVLINK_MSG_ID_COMMAND_LONG:
+                    {
+                        mavlink_msg_command_long_decode(&rcv_mavlink_message, &(current_messages_to_read.com));
+                        current_messages_to_read.time_stamps.com = get_time_usec();
+                        this_timestamps.com = current_messages_to_read.time_stamps.com;
+                        
+                        if (current_messages_to_read.com.command == MAV_CMD_NAV_GUIDED_ENABLE && current_messages_to_read.com.param1>0.5)
+                        {
+                            cout << "Got offboard command" <<endl;
+                            offb_flag=1;
+                            break;
+                        }
+                        if (current_messages_to_read.com.command == MAV_CMD_NAV_GUIDED_ENABLE && current_messages_to_read.com.param1<0.5)
+                        {
+                            offb_flag=0;
+                            break;
+                        }
+                        // arm/disarm?
+                        if (current_messages_to_read.com.command == MAV_CMD_COMPONENT_ARM_DISARM && current_messages_to_read.com.param1>0.5)
+                            cout << "got arm/disarm command from GC..."<<endl;
+                        {
+                            
+                            arm_flag=1;
+                            break;
+                        }
+                        if (current_messages_to_read.com.command == MAV_CMD_COMPONENT_ARM_DISARM && current_messages_to_read.com.param1<0.5)
+                        {
+                            arm_flag=0;
+                            break;
+                        }
+                        break;
+                    }
+                    case MAVLINK_MSG_ID_ATT_POS_MOCAP:
+                    {
+                        cout << "Got Mocap message from GC" << endl;
+                        mavlink_msg_att_pos_mocap_decode(&rcv_mavlink_message, &(current_messages_to_read.mocap));
+                        current_messages_to_read.time_stamps.mocap = get_time_usec();
+                        this_timestamps.mocap = current_messages_to_read.time_stamps.mocap;
+                        break;
+                    }
+                    case MAVLINK_MSG_ID_REQUEST_DATA_STREAM:
+                    {
+                        mavlink_msg_request_data_stream_decode(&rcv_mavlink_message, &(current_messages_to_read.req_stream));
+                        current_messages_to_read.time_stamps.req_stream = get_time_usec();
+                        this_timestamps.req_stream = current_messages_to_read.time_stamps.req_stream;
+                        break;
+                    }
+                    case MAVLINK_MSG_ID_PARAM_SET:
+                    {
+                        mavlink_msg_param_set_decode(&rcv_mavlink_message, &(current_messages_to_read.setparam));
+                        current_messages_to_read.time_stamps.setparam = get_time_usec();
+                        this_timestamps.setparam = current_messages_to_read.time_stamps.setparam;
+                        break;
+                    }
+                        
+                        
+                    case MAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET:
+                    {
+                        mavlink_msg_set_actuator_control_target_decode(&rcv_mavlink_message, &(current_messages_to_read.set_actuators));
+                        current_messages_to_read.time_stamps.set_actuators = get_time_usec();
+                        this_timestamps.set_actuators = current_messages_to_read.time_stamps.set_actuators;
+                        break;
+                    }
+                        
+                    default:
+                    {
+                        // printf("Warning, did not handle message id %i\n",message.msgid);
+                        break;
+                    }
+                        
+                        
+                } // end: switch msgid
+
+            }
+        }
+        memset(inBuff, 0, sizeof(inBuff)); // reset input buffer
+        if ( writing_status > false )
+            usleep(100); // look for components of batches at 10kHz
+    }
+    
+    // Couldn't read from port
+    else
+    {
+        //fprintf(stderr, "ERROR: Could not read from fd %d\n", fd);
+        cerr << "Could not read from udp port." << endl;
+    }
+    
+    // --------------------------------------------------------------------------
+    //   DEBUGGING REPORTS
+    // --------------------------------------------------------------------------
+    if(msgReceived && debug)
+    {
+        // Report info
+        printf("Received message from serial with ID #%d (sys:%d|comp:%d):\n", rcv_mavlink_message.msgid, rcv_mavlink_message.sysid, rcv_mavlink_message.compid);
+        
+        fprintf(stderr,"Received serial data: ");
+        unsigned int i;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        
+        // check message is write length
+        unsigned int messageLength = mavlink_msg_to_send_buffer(buffer, &rcv_mavlink_message);
+        
+        // message length error
+        if (messageLength > MAVLINK_MAX_PACKET_LEN)
+        {
+            fprintf(stderr, "\nFATAL ERROR: MESSAGE LENGTH IS LARGER THAN BUFFER SIZE\n");
+        }
+        
+        // print out the buffer
+        else
+        {
+            for (i=0; i<messageLength; i++)
+            {
+                unsigned char v=buffer[i];
+                fprintf(stderr,"%02x ", v);
+            }
+            fprintf(stderr,"\n");
+        }
+    }
+    
+    // Done!
+    return;
 }
 
 /*
@@ -1158,9 +1448,10 @@ read_thread()
     
     while ( not time_to_exit )
     {
-        read_messages();
+        //read_messages();
+        read_mavlink_messages_2();
         //read_messages_raw();
-        usleep(0.01*1000000); // Read batches at 50Hz
+        usleep(0.001*1000000); // Read batches at 100Hz
     }
     
     reading_status = false;
