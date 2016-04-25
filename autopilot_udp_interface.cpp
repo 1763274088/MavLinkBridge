@@ -277,6 +277,7 @@ read_mavlink_messages(mavlink_message_t &message)
     
     try {
      result = udp_socket->recv(inBuff, inBuffLen);// is it '->' or just '.'
+        if (debug)
         cout << " result of UDP recv function...." << result << endl;
     }catch(exception& e)
     {
@@ -415,7 +416,7 @@ read_messages()
     current_messages_to_read.reset_timestamps();
     //cout << "time stamp... "<<current_messages_to_read.time_stamps.heartbeat << endl;
     //loop 5 times?
-    while (not time_to_exit && counter < 10)
+    while (not time_to_exit && counter < 5)
     {
         // ----------------------------------------------------------------------
         //   READ MESSAGE
@@ -1045,7 +1046,7 @@ start()
     while ( not writing_status )
         usleep(100000); // 10Hz
     
-    // now we're streaming setpoint commands
+    // now we're streaming via UDP
     printf("\n");
     
     
@@ -1159,7 +1160,7 @@ read_thread()
     {
         read_messages();
         //read_messages_raw();
-        usleep(0.02*1000000); // Read batches at 50Hz
+        usleep(0.01*1000000); // Read batches at 50Hz
     }
     
     reading_status = false;

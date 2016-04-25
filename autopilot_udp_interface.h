@@ -325,7 +325,7 @@ private:
     
     UDPSocket *udp_socket;
     
-    const int inBuffLen=1024; // maximum input buffer length
+    const int inBuffLen=1024*2; // maximum input buffer length
     const int outBuffLen=1024;// maximum output buffer length
     
     // define I/O buffers
