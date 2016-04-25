@@ -1,8 +1,8 @@
 //
-//  mavlink_bridge.cpp
+//  testUDP.cpp
 //
 //
-//  Created by Mohamed A AbdKader on 1/19/16.
+//  Created by Mohamed A AbdKader on 4/25/16.
 //
 //
 
@@ -66,7 +66,8 @@ int main(int argc, char *argv[])
     const float dt=0.02;
     const int t = 1; // time in seconds
     int T = (int) (t/dt); // number of iterations needed to complete (t) seconds with delay (dt)
-    for (int i=0;i<T;i++)// run forever
+    
+    for (int i=0;i<T;i++)
     {
         //cout << "i am here.." << endl;
         cout << autopilot_udp_interface.current_messages_to_read.time_stamps.attitude << endl;
