@@ -1451,7 +1451,7 @@ read_thread()
         //read_messages();
         read_mavlink_messages_2();
         //read_messages_raw();
-        usleep(0.001*1000000); // Read batches at 100Hz
+        usleep(0.001*1000000); // Read batches at 1KHz
     }
     
     reading_status = false;
@@ -1496,7 +1496,7 @@ write_thread(void)
     // otherwise it will go into fail safe
     while ( not time_to_exit )
     {
-        usleep(0.02*1000000);   // Stream at 50Hz
+        usleep(0.001*1000000);   // Stream at 1KHz
         //write_setpoint();
         write_to_GC();
         
