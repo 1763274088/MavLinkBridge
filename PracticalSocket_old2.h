@@ -1,3 +1,6 @@
+//fix invocation to atoi.
+#include <cstdlib>
+
 /*
  *   C++ sockets on Unix and Windows
  *   Copyright (C) 2002
@@ -20,8 +23,8 @@
 #ifndef __PRACTICALSOCKET_INCLUDED__
 #define __PRACTICALSOCKET_INCLUDED__
 
-#include <string>            // For string
 #include <exception>         // For exception class
+#include <string>            // For string
 
 using namespace std;
 
