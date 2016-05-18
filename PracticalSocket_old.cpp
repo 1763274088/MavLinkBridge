@@ -18,6 +18,9 @@
  */
 
 #include "PracticalSocket.h"
+#include <stdio.h>
+#include <cstdlib>
+#include <iostream>
 
 #ifdef WIN32
   #include <winsock.h>         // For socket(), connect(), send(), and recv()
@@ -29,13 +32,16 @@
   #include <netdb.h>           // For gethostbyname()
   #include <arpa/inet.h>       // For inet_addr()
   #include <unistd.h>          // For close()
+    #include <fcntl.h>
   #include <netinet/in.h>      // For sockaddr_in
+    #include <time.h>
+    #include <sys/time.h>
   typedef void raw_type;       // Type used for raw data on this platform
 #endif
 
 #include <errno.h>             // For errno
-#include <string.h>             // For memset
-
+#include "stdlib.h" // I had to add this in order to compil, otherwise it gives error
+#include "string.h" // I had to add this in order to compil, otherwise it gives error
 using namespace std;
 
 #ifdef WIN32
@@ -204,6 +210,25 @@ void CommunicatingSocket::send(const void *buffer, int bufferLen)
 int CommunicatingSocket::recv(void *buffer, int bufferLen) 
     throw(SocketException) {
   int rtn;
+        // added by M abdelkader
+        // setting the non-blocking mode
+        /*
+        int x;
+        x=fcntl(sockDesc,F_GETFL,0);
+        fcntl(sockDesc,F_SETFL,x | O_NONBLOCK);
+        */
+        // setting a timeout for the udp read
+        struct timeval t;
+        t.tv_sec = 0;
+        t.tv_usec = 500000;// 0.5 second
+        // reference:
+        //http://stackoverflow.com/questions/22120380/udp-receive-timeout-option-linux-c
+        if(setsockopt(sockDesc, SOL_SOCKET, SO_RCVTIMEO, &t, sizeof(t)) == -1){
+            perror("Setting SO_RCVTIMEO option in UDP socket for destination RX: ");
+            cerr<<"Couldn't set SO_RCVTIMEO option in UDP socket for destination RX" <<endl;
+            exit(1);
+        }
+        //-----
   if ((rtn = ::recv(sockDesc, (raw_type *) buffer, bufferLen, 0)) < 0) {
     throw SocketException("Received failed (recv())", true);
   }
