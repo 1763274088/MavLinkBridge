@@ -695,6 +695,7 @@ read_messages_raw()
     success = read_mavlink_messages(message);
     
     if (success) {
+        cout << "Got mavlink packet fromGCS...."<<endl;
         // Store message sysid and compid.
         // Note this doesn't handle multiple message sources.
         current_messages_to_read.sysid  = message.sysid;
