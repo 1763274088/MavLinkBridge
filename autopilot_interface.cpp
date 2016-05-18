@@ -1024,7 +1024,7 @@ read_thread()
 	{
 		read_messages();
         //read_messages_raw();
-		usleep(0.001*1000000); // Read batches at 1KHz?
+		//usleep(0.001*1000000); // Read batches at 1KHz?
 	}
 
 	reading_status = false;
@@ -1065,7 +1065,7 @@ write_thread(void)
 	// otherwise it will go into fail safe
 	while ( not time_to_exit )
 	{
-		usleep(0.001*1000000);   // write at 1KHz?
+		//usleep(0.001*1000000);   // write at 1KHz?
 		//write_setpoint();
         
         //write specific commands
