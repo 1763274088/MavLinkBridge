@@ -294,7 +294,8 @@ read_messages()
 	Time_Stamps this_timestamps;
     //current_messages_to_read.reset_timestamps();
 	// Blocking wait for new data
-	while ( not received_all and not time_to_exit )
+	//while ( not received_all and not time_to_exit )
+    while ( not time_to_exit )
 	{
 		// ----------------------------------------------------------------------
 		//   READ MESSAGE
