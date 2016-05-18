@@ -427,6 +427,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_heartbeat_decode(&rcv_mavlink_message, &(current_messages_to_read.heartbeat));
                         current_messages_to_read.time_stamps.heartbeat = get_time_usec();
                         this_timestamps.heartbeat = current_messages_to_read.time_stamps.heartbeat;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -436,6 +438,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_sys_status_decode(&rcv_mavlink_message, &(current_messages_to_read.sys_status));
                         current_messages_to_read.time_stamps.sys_status = get_time_usec();
                         this_timestamps.sys_status = current_messages_to_read.time_stamps.sys_status;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -445,6 +449,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_battery_status_decode(&rcv_mavlink_message, &(current_messages_to_read.battery_status));
                         current_messages_to_read.time_stamps.battery_status = get_time_usec();
                         this_timestamps.battery_status = current_messages_to_read.time_stamps.battery_status;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -454,6 +460,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_radio_status_decode(&rcv_mavlink_message, &(current_messages_to_read.radio_status));
                         current_messages_to_read.time_stamps.radio_status = get_time_usec();
                         this_timestamps.radio_status = current_messages_to_read.time_stamps.radio_status;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -463,6 +471,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_local_position_ned_decode(&rcv_mavlink_message, &(current_messages_to_read.local_position_ned));
                         current_messages_to_read.time_stamps.local_position_ned = get_time_usec();
                         this_timestamps.local_position_ned = current_messages_to_read.time_stamps.local_position_ned;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -472,6 +482,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_global_position_int_decode(&rcv_mavlink_message, &(current_messages.global_position_int));
                         current_messages_to_read.time_stamps.global_position_int = get_time_usec();
                         this_timestamps.global_position_int = current_messages_to_read.time_stamps.global_position_int;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -481,6 +493,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_position_target_local_ned_decode(&rcv_mavlink_message, &(current_messages_to_read.position_target_local_ned));
                         current_messages_to_read.time_stamps.position_target_local_ned = get_time_usec();
                         this_timestamps.position_target_local_ned = current_messages_to_read.time_stamps.position_target_local_ned;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -490,6 +504,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_position_target_global_int_decode(&rcv_mavlink_message, &(current_messages_to_read.position_target_global_int));
                         current_messages_to_read.time_stamps.position_target_global_int = get_time_usec();
                         this_timestamps.position_target_global_int = current_messages_to_read.time_stamps.position_target_global_int;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -499,6 +515,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_highres_imu_decode(&rcv_mavlink_message, &(current_messages_to_read.highres_imu));
                         current_messages_to_read.time_stamps.highres_imu = get_time_usec();
                         this_timestamps.highres_imu = current_messages_to_read.time_stamps.highres_imu;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -508,6 +526,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_attitude_decode(&rcv_mavlink_message, &(current_messages_to_read.attitude));
                         current_messages_to_read.time_stamps.attitude = get_time_usec();
                         this_timestamps.attitude = current_messages_to_read.time_stamps.attitude;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                     case MAVLINK_MSG_ID_SET_POSITION_TARGET_LOCAL_NED:
@@ -516,6 +536,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_set_position_target_local_ned_decode(&rcv_mavlink_message, &(current_messages_to_read.setpoint));
                         current_messages_to_read.time_stamps.setpoint = get_time_usec();
                         this_timestamps.setpoint = current_messages_to_read.time_stamps.setpoint;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                     case MAVLINK_MSG_ID_COMMAND_LONG:
@@ -523,6 +545,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_command_long_decode(&rcv_mavlink_message, &(current_messages_to_read.com));
                         current_messages_to_read.time_stamps.com = get_time_usec();
                         this_timestamps.com = current_messages_to_read.time_stamps.com;
+                        
+                        current_messages_to_read.updated=1;
                         
                         if (current_messages_to_read.com.command == MAV_CMD_NAV_GUIDED_ENABLE && current_messages_to_read.com.param1>0.5)
                         {
@@ -556,6 +580,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_att_pos_mocap_decode(&rcv_mavlink_message, &(current_messages_to_read.mocap));
                         current_messages_to_read.time_stamps.mocap = get_time_usec();
                         this_timestamps.mocap = current_messages_to_read.time_stamps.mocap;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                     case MAVLINK_MSG_ID_REQUEST_DATA_STREAM:
@@ -563,6 +589,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_request_data_stream_decode(&rcv_mavlink_message, &(current_messages_to_read.req_stream));
                         current_messages_to_read.time_stamps.req_stream = get_time_usec();
                         this_timestamps.req_stream = current_messages_to_read.time_stamps.req_stream;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                     case MAVLINK_MSG_ID_PARAM_SET:
@@ -570,6 +598,8 @@ read_mavlink_messages_2(void)
                         mavlink_msg_param_set_decode(&rcv_mavlink_message, &(current_messages_to_read.setparam));
                         current_messages_to_read.time_stamps.setparam = get_time_usec();
                         this_timestamps.setparam = current_messages_to_read.time_stamps.setparam;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
@@ -579,12 +609,16 @@ read_mavlink_messages_2(void)
                         mavlink_msg_set_actuator_control_target_decode(&rcv_mavlink_message, &(current_messages_to_read.set_actuators));
                         current_messages_to_read.time_stamps.set_actuators = get_time_usec();
                         this_timestamps.set_actuators = current_messages_to_read.time_stamps.set_actuators;
+                        
+                        current_messages_to_read.updated=1;
                         break;
                     }
                         
                     default:
                     {
                         // printf("Warning, did not handle message id %i\n",message.msgid);
+                        current_messages_to_read.reset_timestamps();
+                        current_messages_to_read.updated=0;
                         break;
                     }
                         

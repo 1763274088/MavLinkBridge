@@ -94,16 +94,19 @@ int main(int argc, char *argv[])
     for (;;)// run forever
     {
         //cout << "i am here.." << endl;
-        autopilot_udp_interface.current_messages_to_write=autopilot_serial_interface.current_messages_to_read;
-        //usleep(1000); //give it some time to sink
-        autopilot_serial_interface.current_messages_to_read.reset_timestamps();
-        autopilot_udp_interface.current_messages_to_write.reset_timestamps();
-        autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
-        //usleep(1000); // to sink
-        autopilot_udp_interface.current_messages_to_read.reset_timestamps();
-        autopilot_serial_interface.current_messages_to_write.reset_timestamps();
-        //cout << "mocap time stamp........." <<autopilot_serial_interface.current_messages_to_write.time_stamps.mocap<<endl;
-        usleep(0.01*1000000); // 50Hz
+        if (autopilot_serial_interface.current_messages_to_read.updated>0){
+            autopilot_udp_interface.current_messages_to_write=autopilot_serial_interface.current_messages_to_read;
+            autopilot_serial_interface.current_messages_to_read.updated=0;
+        
+        }
+        
+        if (autopilot_udp_interface.current_messages_to_read.updated>0){
+            autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
+            autopilot_udp_interface.current_messages_to_read.updated=0;
+        }
+        
+       
+       // usleep(0.01*1000000); // 50Hz
     }
     
     

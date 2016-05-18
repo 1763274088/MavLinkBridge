@@ -292,7 +292,7 @@ read_messages()
 	bool success;               // receive success flag
 	bool received_all = false;  // receive only one message
 	Time_Stamps this_timestamps;
-    current_messages_to_read.reset_timestamps();
+    //current_messages_to_read.reset_timestamps();
 	// Blocking wait for new data
 	while ( not received_all and not time_to_exit )
 	{
@@ -323,6 +323,8 @@ read_messages()
 					mavlink_msg_heartbeat_decode(&message, &(current_messages_to_read.heartbeat));
 					current_messages_to_read.time_stamps.heartbeat = get_time_usec();
 					this_timestamps.heartbeat = current_messages_to_read.time_stamps.heartbeat;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -332,6 +334,8 @@ read_messages()
 					mavlink_msg_sys_status_decode(&message, &(current_messages_to_read.sys_status));
 					current_messages_to_read.time_stamps.sys_status = get_time_usec();
 					this_timestamps.sys_status = current_messages_to_read.time_stamps.sys_status;
+
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -341,6 +345,8 @@ read_messages()
 					mavlink_msg_battery_status_decode(&message, &(current_messages_to_read.battery_status));
 					current_messages_to_read.time_stamps.battery_status = get_time_usec();
 					this_timestamps.battery_status = current_messages_to_read.time_stamps.battery_status;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -350,6 +356,8 @@ read_messages()
 					mavlink_msg_radio_status_decode(&message, &(current_messages_to_read.radio_status));
 					current_messages_to_read.time_stamps.radio_status = get_time_usec();
 					this_timestamps.radio_status = current_messages_to_read.time_stamps.radio_status;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -359,6 +367,8 @@ read_messages()
 					mavlink_msg_local_position_ned_decode(&message, &(current_messages_to_read.local_position_ned));
 					current_messages_to_read.time_stamps.local_position_ned = get_time_usec();
 					this_timestamps.local_position_ned = current_messages_to_read.time_stamps.local_position_ned;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -368,6 +378,8 @@ read_messages()
 					mavlink_msg_global_position_int_decode(&message, &(current_messages_to_read.global_position_int));
 					current_messages_to_read.time_stamps.global_position_int = get_time_usec();
 					this_timestamps.global_position_int = current_messages_to_read.time_stamps.global_position_int;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -377,6 +389,8 @@ read_messages()
 					mavlink_msg_position_target_local_ned_decode(&message, &(current_messages_to_read.position_target_local_ned));
 					current_messages_to_read.time_stamps.position_target_local_ned = get_time_usec();
 					this_timestamps.position_target_local_ned = current_messages_to_read.time_stamps.position_target_local_ned;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -386,6 +400,8 @@ read_messages()
 					mavlink_msg_position_target_global_int_decode(&message, &(current_messages_to_read.position_target_global_int));
 					current_messages_to_read.time_stamps.position_target_global_int = get_time_usec();
 					this_timestamps.position_target_global_int = current_messages_to_read.time_stamps.position_target_global_int;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -395,6 +411,8 @@ read_messages()
 					mavlink_msg_highres_imu_decode(&message, &(current_messages_to_read.highres_imu));
 					current_messages_to_read.time_stamps.highres_imu = get_time_usec();
 					this_timestamps.highres_imu = current_messages_to_read.time_stamps.highres_imu;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
@@ -404,12 +422,16 @@ read_messages()
 					mavlink_msg_attitude_decode(&message, &(current_messages_to_read.attitude));
 					current_messages_to_read.time_stamps.attitude = get_time_usec();
 					this_timestamps.attitude = current_messages_to_read.time_stamps.attitude;
+                    
+                    current_messages_to_read.updated=1;
 					break;
 				}
 
 				default:
 				{
 					// printf("Warning, did not handle message id %i\n",message.msgid);
+                    current_messages_to_read.reset_timestamps();
+                    current_messages_to_read.updated=0;
 					break;
 				}
 
