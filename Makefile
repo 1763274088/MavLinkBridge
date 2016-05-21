@@ -1,7 +1,7 @@
-all: mavlink_bridge
+all: mavlink_gateway
 
-mavlink_bridge: mavlink_bridge.cpp serial_port.h PracticalSocket.h autopilot_interface.h autopilot_udp_interface.h
-	g++ -w -I include/mavlink  mavlink_bridge.cpp serial_port.cpp PracticalSocket.cpp autopilot_interface.cpp autopilot_udp_interface.cpp  -o mavlink_bridge -lpthread
+mavlink_gateway: mavlink_gateway.cpp serial_port.h PracticalSocket.h
+	g++ -w -I include/mavlink  mavlink_gateway.cpp serial_port.cpp PracticalSocket.cpp -o mavlink_gateway
 
 clean:
-	 rm -rf *o mavlink_bridge
+	 rm -rf *o mavlink_gateway

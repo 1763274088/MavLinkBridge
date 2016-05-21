@@ -6,8 +6,8 @@
 //
 //
 
-//#ifndef MAVLINK_BRIDGE_H_
-//#define MAVLINK_BRIDGE_H_
+//#ifndef MAVLINK_GATEWAY_H_
+//#define MAVLINK_GATEWAY_H_
 
 
 
@@ -72,6 +72,7 @@ using namespace std;
 #include <common/mavlink.h>
 
 #include "serial_port.h"
+#include "PracticalSocket.h"
 
 
 // ------------------------------------------------------------------------------
@@ -83,10 +84,6 @@ int main(int argc, char *argv[]);
 
 //void commands(Autopilot_Interface &autopilot_interface);
 //void parse_commandline(int argc, char **argv, char *&uart_name, int &baudrate);
-
-// quit handler
-Autopilot_Interface *autopilot_interface_quit;
-Autopilot_UDP_Interface *autopilot_udp_interface_quit;
 Serial_Port *serial_port_quit;
 void quit_handler( int sig );
 
