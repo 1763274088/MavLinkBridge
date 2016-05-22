@@ -73,18 +73,16 @@ int main(int argc, char *argv[])
     {
         // 1---------------read serial port, forward to udp port
         
+        while (not success){
         success = serial_port.read_message(message);
-        if (success) {
-            cout << "got msg from serial, forwarding to udp"<<endl;
-            
-            // Translate message to buffer
-            unsigned len = mavlink_msg_to_send_buffer(buf, &message);
-            
-            // Write buffer to UDP socket
-            //_write_port(buf,len);
-            //cout << "dest port: " <<destPort<<endl;
-            sock.sendTo(buf, len, remoteAddrs, remotePort);
         }
+
+        cout << "got msg from serial, forwarding to udp"<<endl;
+        
+        // Translate message to buffer
+        unsigned len = mavlink_msg_to_send_buffer(buf, &message);
+
+        sock.sendTo(buf, len, remoteAddrs, remotePort);
         
         // 2----------- read udp port, forward to serial port
         try {
