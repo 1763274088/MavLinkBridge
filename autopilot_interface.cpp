@@ -433,7 +433,7 @@ read_messages()
 				default:
 				{
 					// printf("Warning, did not handle message id %i\n",message.msgid);
-                    current_messages_to_read.reset_timestamps();
+                    //current_messages_to_read.reset_timestamps();
                     current_messages_to_read.updated=0;
 					break;
 				}
