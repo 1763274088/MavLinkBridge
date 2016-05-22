@@ -740,7 +740,7 @@ read_messages()
     //while ( not received_all and not time_to_exit )
     unsigned int counter=0;
     
-    current_messages_to_read.reset_timestamps();
+    //current_messages_to_read.reset_timestamps();
     //cout << "time stamp... "<<current_messages_to_read.time_stamps.heartbeat << endl;
     //loop 5 times?
     while (not time_to_exit && counter < 5)
@@ -1507,7 +1507,7 @@ read_thread()
         read_messages();
         //read_mavlink_messages_2();
         //read_messages_raw();
-        usleep(0.001*1000000); // Read batches at 1KHz
+        //usleep(0.001*1000000); // Read batches at 1KHz
     }
     
     reading_status = false;
@@ -1552,7 +1552,7 @@ write_thread(void)
     // otherwise it will go into fail safe
     while ( not time_to_exit )
     {
-        usleep(0.001*1000000);   // Stream at 1KHz
+        //usleep(0.001*1000000);   // Stream at 1KHz
         //write_setpoint();
         write_to_GC();
         
