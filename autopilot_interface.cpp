@@ -555,6 +555,7 @@ write_commands()
             mavlink_msg_command_long_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.com));
             // do the write
             int len = write_message(message);
+            cout << "wrote arm command to autopilot.."<<endl;
             
             // check the write
             if ( not len > 0 )
