@@ -884,11 +884,13 @@ read_messages()
                     {
                         cout << "Got offboard command" <<endl;
                         offb_flag=1;
+                        current_messages_to_read.updated=1;
                         break;
                     }
                     if (current_messages_to_read.com.command == MAV_CMD_NAV_GUIDED_ENABLE && current_messages_to_read.com.param1<0.5)
                     {
                         offb_flag=0;
+                        current_messages_to_read.updated=1;
                         break;
                     }
                     // arm/disarm?
@@ -897,14 +899,16 @@ read_messages()
                     {
                         
                         arm_flag=1;
+                        current_messages_to_read.updated=1;
                         break;
                     }
                     if (current_messages_to_read.com.command == MAV_CMD_COMPONENT_ARM_DISARM && current_messages_to_read.com.param1<0.5)
                     {
                         arm_flag=0;
+                        current_messages_to_read.updated=1;
                         break;
                     }
-                    current_messages_to_read.updated=1;
+                    
                     break;
                 }
                 case MAVLINK_MSG_ID_ATT_POS_MOCAP:
@@ -946,6 +950,7 @@ read_messages()
                 default:
                 {
                     // printf("Warning, did not handle message id %i\n",message.msgid);
+                    current_messages_to_read.updated=0;
                     break;
                 }
                     
