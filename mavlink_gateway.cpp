@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     while(1)// run forever
     {
         // 1---------------read serial port, forward to udp port
-        
+        success=false;
         while (not success){
         success = serial_port.read_message(message);
         }
@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
         
         // Translate message to buffer
         unsigned len = mavlink_msg_to_send_buffer(buf, &message);
+        cout << "buf len.." << len << endl;
 
         sock.sendTo(buf, (int)len, remoteAddrs, remotePort);
         
