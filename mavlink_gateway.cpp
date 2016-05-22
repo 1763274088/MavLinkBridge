@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
         success=false;
         while (not success){
         success = serial_port.read_message(message);
+            
         }
 
         cout << "got msg from serial, forwarding to udp"<<endl;
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
                 {
                     // maybe we should assign mavlink messages here
                     serial_port.write_message(message);
-                    break;
+                    //break;
                 }
             }
         }
