@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 
 
 
-        usleep(100); // 50Hz
+        //usleep(100); // 50Hz
     }
 
 
