@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     mavlink_status_t status;
     
     int result;
-    bool success; 
+    bool success;
     
     const int inBuffLen=1024*2; // maximum input buffer length
     
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
     while(1)// run forever
     {
-        // read serial port, forward to udp port
+        // 1---------------read serial port, forward to udp port
         
         success = serial_port.read_message(message);
         if (success) {
@@ -86,8 +86,9 @@ int main(int argc, char *argv[])
             sock.sendTo(buf, len, remoteAddrs, remotePort);
         }
         
-        // read udp port, forward to serial port
+        // 2----------- read udp port, forward to serial port
         try {
+            result=0;
             result = sock.recv(inBuff, inBuffLen);// is it '->' or just '.'
         }catch(exception& e)
         {
@@ -95,6 +96,7 @@ int main(int argc, char *argv[])
         }
         if (result > 0)
         {
+            cout << "got udp, forwarding to serial.."<<endl;
             for (int i=0; i<result; i++){
                 // the parsing
                 foundmsg = mavlink_parse_char(MAVLINK_COMM_1, inBuff[i], &message, &status);
@@ -103,7 +105,7 @@ int main(int argc, char *argv[])
                 {
                     // maybe we should assign mavlink messages here
                     serial_port.write_message(message);
-                    //break;
+                    break;
                 }
             }
         }
