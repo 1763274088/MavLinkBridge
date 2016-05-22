@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
         
         success = serial_port.read_message(message);
         if (success) {
-            
+            cout << "got msg from serial, forwarding to udp"<<endl;
             
             // Translate message to buffer
             unsigned len = mavlink_msg_to_send_buffer(buf, &message);
