@@ -1134,6 +1134,7 @@ write_to_GC()
     //----write local ned position
     if (current_messages_to_write.time_stamps.local_position_ned)
     {
+        cout << "sending local ned to GCS.."<<endl;
         current_messages_to_write.time_stamps.local_position_ned=0;//reset timestamp untile we get a new one
         mavlink_msg_local_position_ned_encode(current_messages_to_write.sysid, current_messages_to_write.compid, &message, &(current_messages_to_write.local_position_ned) );
         // do the write
