@@ -1024,8 +1024,8 @@ read_thread()
 
 	while ( not time_to_exit )
 	{
-		//read_messages();
-        read_messages_raw();
+		read_messages();
+        //read_messages_raw();
 		//usleep(0.001*1000000); // Read batches at 1KHz?
 	}
 
@@ -1071,10 +1071,10 @@ write_thread(void)
 		//write_setpoint();
         
         //write specific commands
-        //write_commands();
+        write_commands();
         
         // write the raw mavlink packet
-        write_raw_mavlink();
+        //write_raw_mavlink();
 	}
 
 	// signal end
