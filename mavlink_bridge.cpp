@@ -90,23 +90,28 @@ int main(int argc, char *argv[])
      * get the current_messages_to_read from udp
      * and assign it to current_messages_to_write in serial
     */
+    int swap=0;
     
     for (;;)// run forever
     {
         //cout << "i am here.." << endl;
         if (autopilot_serial_interface.current_messages_to_read.updated>0){
+            swap=autopilot_udp_interface.current_messages_to_write.updated;
             autopilot_udp_interface.current_messages_to_write=autopilot_serial_interface.current_messages_to_read;
+            autopilot_udp_interface.current_messages_to_write.updated=swap;
             autopilot_serial_interface.current_messages_to_read.updated=0;
         
         }
         
         if (autopilot_udp_interface.current_messages_to_read.updated>0){
+            swap=autopilot_serial_interface.current_messages_to_write.updated;
             autopilot_serial_interface.current_messages_to_write=autopilot_udp_interface.current_messages_to_read;
+            autopilot_serial_interface.current_messages_to_write.updated=swap;
             autopilot_udp_interface.current_messages_to_read.updated=0;
         }
         
        
-        usleep(0.01*1000000); // 50Hz
+        //usleep(0.01*1000000); // 50Hz
     }
     
     

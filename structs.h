@@ -185,6 +185,7 @@ struct Mavlink_Messages {
     int sysid;
     int compid;
     int updated=0;
+
     
     // Mavlink general message
     mavlink_message_t mavlink_packet;
