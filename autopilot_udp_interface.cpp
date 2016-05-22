@@ -977,6 +977,7 @@ write_mavlink_message(mavlink_message_t &message)
     // Translate message to buffer
     unsigned len = mavlink_msg_to_send_buffer(buf, &message);
     
+    
     // Write buffer to UDP socket
     //_write_port(buf,len);
     //cout << "dest port: " <<destPort<<endl;

@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         // Translate message to buffer
         unsigned len = mavlink_msg_to_send_buffer(buf, &message);
 
-        sock.sendTo(buf, len, remoteAddrs, remotePort);
+        sock.sendTo(buf, (int)len, remoteAddrs, remotePort);
         
         // 2----------- read udp port, forward to serial port
         try {
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 
 
 
-       // usleep(0.01*1000000); // 50Hz
+        usleep(100); // 50Hz
     }
 
 
