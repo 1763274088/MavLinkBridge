@@ -514,6 +514,7 @@ write_commands()
     
     mavlink_message_t message;
     
+    cout << "timestamp.."<<current_messages_to_write.time_stamps.com <<endl;
     //----write command_lon (e.g. arm.disarm, offboard)
     if (current_messages_to_write.time_stamps.com)
     {
