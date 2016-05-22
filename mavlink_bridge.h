@@ -72,7 +72,8 @@ using namespace std;
 #include <common/mavlink.h>
 
 #include "serial_port.h"
-
+#include "autopilot_interface.h"
+#include "autopilot_udp_interface.h"
 
 // ------------------------------------------------------------------------------
 //   Prototypes
